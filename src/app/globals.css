@@ -1,0 +1,766 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Background Animation */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glow {
+  0%, 50% { text-shadow: 0 0 20px rgba(168, 85, 247, 0.5); }
+  30% { text-shadow: 0 0 30px rgba(168, 85, 247, 0.8), 0 0 40px rgba(168, 85, 247, 0.3); }
+}
+
+/* Character Background Animations */
+@keyframes magicSparkle {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+}
+
+@keyframes warriorPulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 0.5; }
+}
+
+@keyframes rogueShadow {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+}
+
+@keyframes sageMeditate {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.2) rotate(180deg); }
+  100% { transform: scale(1) rotate(360deg); }
+}
+
+@keyframes archerAim {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(0deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(360deg); }
+}
+
+:root {
+  /* Color Variables */
+  --color-background: #0f0720;
+  --color-background-dark: #1a0b2e;
+  --color-purple: rgb(147, 51, 234);
+  --color-purple-light: rgb(168, 85, 247);
+  --color-cyan: rgb(6, 182, 212);
+  --color-white: #ffffff;
+  
+  /* Common Values */
+  --border-radius: 0.5rem;
+  --transition-standard: all 0.3s ease;
+  --font-family-main: var(--font-libre-baskerville), serif;
+  --font-family-title: var(--font-cinzel-decorative), serif;
+
+  --foreground: 0 0% 94%;
+  --background: 0 0% 10%;
+  --primary: 180 100% 50%;
+  --primary-foreground: 0 0% 94%;
+  --accent: 180 100% 25%;
+  --accent-foreground: 0 0% 94%;
+  --border: 0 0% 25%;
+  --ring: 180 100% 25%;
+
+  /* Sidebar Colors */
+  --sidebar-background: 0 0% 10%;
+  --sidebar-foreground: 0 0% 94%;
+  --sidebar-primary: 180 100% 50%;
+  --sidebar-primary-foreground: 0 0% 94%;
+  --sidebar-accent: 0 0% 20%;
+  --sidebar-accent-foreground: 0 0% 94%;
+  --sidebar-border: 0 0% 25%;
+  --sidebar-ring: 180 100% 25%;
+
+  --card-bg: rgba(17, 12, 34, 0.7);
+  --border-glow: rgba(168, 85, 247, 0.5);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    color-scheme: dark;
+    min-height: 100vh;
+  }
+  body {
+    @apply text-foreground;
+    font-family: var(--font-family-main);
+    background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-dark) 50%, var(--color-background) 100%);
+    min-height: 100vh;
+    color: var(--color-white);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Magical Overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(147, 51, 234, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .game-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .text-area {
+    padding: 20px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  /* Enhanced Input Fields */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    position: relative;
+    z-index: 2;
+    padding: 16px;
+    background: rgba(26, 15, 46, 0.7);
+    color: white;
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    border-radius: 0.5rem;
+    outline: none;
+    font-family: var(--font-family-main);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  input:focus,
+  textarea:focus {
+    border-color: rgba(147, 51, 234, 0.8);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+  }
+
+  /* Enhanced Choice Buttons */
+  .choice-button {
+    @apply text-white font-bold rounded-lg;
+    background: rgba(26, 15, 46, 0.7);
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    min-height: 60px;
+    padding: 16px 24px;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: normal;
+    word-wrap: break-word;
+    width: 100%;
+    font-family: var(--font-family-main);
+    backdrop-filter: blur(5px);
+  }
+
+  .choice-button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  .choice-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .choice-button:not(:disabled):hover {
+    transform: translateY(-2px);
+    border-color: rgba(147, 51, 234, 0.8);
+    box-shadow: 0 5px 20px rgba(147, 51, 234, 0.4);
+  }
+
+  .choice-button:not(:disabled):active {
+    transform: translateY(0);
+  }
+
+  /* Enhanced Game Text */
+  .game-text {
+    font-family: var(--font-family-main);
+    font-size: 16px;
+    line-height: 1.8;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(147, 51, 234, 0.3);
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Game Card with Magical Effect */
+  .game-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 1rem;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    animation: float 6s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(168, 85, 247, 0.1),
+      transparent
+    );
+    animation: shimmer 3s infinite;
+  }
+
+  /* ✨ Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(168, 85, 247, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+    }
+  }
+
+  .pulse {
+    animation: pulse 2s infinite;
+  }
+
+  /* 🎯 Choice Container */
+  .choices-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Question Highlight with Magical Effect */
+  .question-highlight {
+    background: rgba(26, 15, 46, 0.7);
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+  }
+
+  /* Title Animation */
+  .game-title {
+    font-family: var(--font-cinzel-decorative), serif;
+    font-size: 4rem;
+    font-weight: 700;
+    text-align: center;
+    background: linear-gradient(135deg, #f0f0f0, #c084fc 50%, #f0f0f0);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: glow 3s ease-in-out infinite;
+    margin: 2rem 0;
+    letter-spacing: 0.2em;
+    position: relative;
+  }
+
+  .game-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--border-glow), transparent);
+  }
+
+  /* Input Field */
+  .story-input {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 0.5rem;
+    color: var(--color-white);
+    font-family: var(--font-family-main);
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .story-input:focus {
+    border-color: rgba(168, 85, 247, 0.8);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+    outline: none;
+  }
+
+  /* Select Dropdowns */
+  .story-select {
+    width: 100% !important;
+    min-height: 3.5rem !important;
+    background: rgba(26, 15, 46, 0.7) !important;
+    border: 2px solid rgba(168, 85, 247, 0.3) !important;
+    border-radius: 0.75rem !important;
+    color: white !important;
+    font-family: var(--font-libre-baskerville), serif !important;
+    font-size: 1.1rem !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    backdrop-filter: blur(10px) !important;
+    padding: 0.75rem 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+  }
+
+  .story-select:hover {
+    border-color: rgba(168, 85, 247, 0.6) !important;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.2) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .story-select:focus {
+    border-color: rgba(168, 85, 247, 0.8) !important;
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3) !important;
+    outline: none !important;
+  }
+
+  .story-select[data-placeholder] {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* Dropdown Container Styles */
+  .form-container > div {
+    position: relative;
+    width: 100%;
+  }
+
+  /* First Dropdown - Cyan Style */
+  .form-container > div:first-child .story-select {
+    border: 2px solid rgb(6, 182, 212) !important;
+    box-shadow: 0 0 0 2px rgb(6, 182, 212) !important;
+  }
+
+  .form-container > div:first-child .story-select:hover,
+  .form-container > div:first-child .story-select[data-state="open"] {
+    border-color: rgb(6, 182, 212) !important;
+    box-shadow: 0 0 0 2px rgb(6, 182, 212),
+                0 0 15px rgba(6, 182, 212, 0.35) !important;
+  }
+
+  .form-container > div:first-child .story-select svg {
+    color: rgb(6, 182, 212) !important;
+  }
+
+  /* Other Dropdowns - Purple Style */
+  .form-container > div:not(:first-child) .story-select {
+    border: 2px solid rgba(147, 51, 234, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.5) !important;
+  }
+
+  .form-container > div:not(:first-child) .story-select:hover,
+  .form-container > div:not(:first-child) .story-select[data-state="open"] {
+    border-color: rgba(147, 51, 234, 0.8) !important;
+    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.8),
+                0 0 15px rgba(147, 51, 234, 0.3) !important;
+  }
+
+  /* Select trigger text */
+  .story-select span {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  /* Chevron icon */
+  .story-select svg {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+    color: rgba(147, 51, 234, 0.8) !important;
+    transition: transform 0.3s ease !important;
+    opacity: 0.8 !important;
+  }
+
+  .story-select[data-state="open"] svg {
+    transform: rotate(-180deg) !important;
+  }
+
+  /* Dropdown content wrapper */
+  [data-radix-popper-content-wrapper] {
+    z-index: 50 !important;
+  }
+
+  /* First Dropdown Content - Cyan */
+  .form-container > div:first-child [data-radix-select-content] {
+    background: rgb(17, 12, 34) !important;
+    border: 2px solid rgb(6, 182, 212) !important;
+    box-shadow: 0 0 0 2px rgb(6, 182, 212),
+                0 4px 20px rgba(6, 182, 212, 0.35) !important;
+  }
+
+  /* Other Dropdown Content - Purple */
+  .form-container > div:not(:first-child) [data-radix-select-content] {
+    background: rgb(17, 12, 34) !important;
+    border: 2px solid rgba(147, 51, 234, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.5),
+                0 4px 20px rgba(147, 51, 234, 0.2) !important;
+  }
+
+  /* Common dropdown content styles */
+  [data-radix-select-content] {
+    border-radius: 0.75rem !important;
+    background: rgb(17, 12, 34) !important;
+    overflow: hidden !important;
+    margin-top: 0.5rem !important;
+    padding: 0.5rem !important;
+    border: 2px solid rgba(147, 51, 234, 0.5) !important;
+    box-shadow: 0 4px 20px rgba(147, 51, 234, 0.2) !important;
+  }
+
+  /* Dropdown viewport */
+  [data-radix-select-viewport] {
+    padding: 0.5rem !important;
+    background: rgb(17, 12, 34) !important;
+  }
+
+  /* Dropdown items base style */
+  [data-radix-select-item] {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: 0.75rem 1rem !important;
+    margin: 0.25rem 0 !important;
+    border-radius: 0.5rem !important;
+    background: rgb(26, 15, 46) !important;
+    color: white !important;
+    font-family: var(--font-libre-baskerville), serif !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    outline: none !important;
+    border: none !important;
+    width: 100% !important;
+    transition: all 0.2s ease !important;
+  }
+
+  /* Hover state for all items */
+  [data-radix-select-item]:hover {
+    background: rgb(38, 22, 66) !important;
+  }
+
+  /* First dropdown (Cyan) specific styles */
+  .form-container > div:first-child [data-radix-select-content] {
+    border: 2px solid rgb(6, 182, 212) !important;
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35) !important;
+  }
+
+  .form-container > div:first-child [data-radix-select-item][data-highlighted] {
+    background: rgba(6, 182, 212, 0.9) !important;
+    color: rgb(17, 12, 34) !important;
+  }
+
+  .form-container > div:first-child [data-radix-select-item][data-state="checked"] {
+    background: rgb(6, 182, 212) !important;
+    color: rgb(17, 12, 34) !important;
+  }
+
+  /* Other dropdowns (Purple) specific styles */
+  .form-container > div:not(:first-child) [data-radix-select-item][data-highlighted] {
+    background: rgba(147, 51, 234, 0.9) !important;
+    color: white !important;
+  }
+
+  .form-container > div:not(:first-child) [data-radix-select-item][data-state="checked"] {
+    background: rgb(147, 51, 234) !important;
+    color: white !important;
+  }
+
+  /* Remove any backdrop filters that might cause issues */
+  [data-radix-select-content],
+  [data-radix-select-viewport],
+  [data-radix-select-item] {
+    backdrop-filter: none !important;
+  }
+
+  /* Ensure content is above other elements */
+  [data-radix-popper-content-wrapper] {
+    z-index: 9999 !important;
+  }
+
+  /* Begin Adventure Button */
+  .submit-button {
+    width: 100%;
+    padding: 1.2rem;
+    background: linear-gradient(135deg, #7e22ce, #a855f7);
+    border: none;
+    border-radius: var(--border-radius);
+    color: var(--color-white);
+    font-family: var(--font-cinzel-decorative), serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: var(--transition-standard);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: shimmer 3s infinite;
+  }
+
+  .submit-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.4);
+    background: linear-gradient(135deg, #9333ea, #c084fc);
+  }
+
+  .submit-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  /* Form Layout */
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 640px) {
+    .game-title {
+      font-size: 2.5rem;
+    }
+
+    .form-container {
+      padding: 1rem;
+    }
+
+    .story-input,
+    .story-select,
+    .submit-button {
+      padding: 0.8rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* Narration Button */
+  .narration-button {
+    background: rgba(26, 15, 46, 0.7);
+    border: 2px solid rgba(147, 51, 234, 0.5);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    color: var(--color-white);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .narration-button:hover {
+    border-color: rgba(147, 51, 234, 0.8);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .narration-button:active {
+    transform: translateY(0);
+  }
+
+  .narration-button[data-active="true"] {
+    border-color: rgb(6, 182, 212);
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+  }
+
+  /* Character-specific background effects */
+  .bg-character-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Mysterious Mage Effect */
+  .bg-mage::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), 
+      rgba(147, 51, 234, 0.15) 0%,
+      rgba(88, 28, 135, 0.1) 20%,
+      transparent 60%);
+    animation: magicSparkle 8s infinite;
+    filter: blur(8px);
+  }
+
+  /* Heroic Warrior Effect */
+  .bg-warrior::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, 
+      rgba(220, 38, 38, 0.1) 0%,
+      transparent 70%);
+    animation: warriorPulse 4s infinite;
+  }
+
+  /* Clever Rogue Effect */
+  .bg-rogue::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg,
+      transparent 0%,
+      rgba(55, 65, 81, 0.1) 25%,
+      rgba(75, 85, 99, 0.15) 50%,
+      rgba(55, 65, 81, 0.1) 75%,
+      transparent 100%);
+    animation: rogueShadow 6s infinite;
+    filter: blur(4px);
+  }
+
+  /* Wise Sage Effect */
+  .bg-sage::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle,
+      rgba(167, 139, 250, 0.15) 0%,
+      transparent 70%);
+    animation: sageMeditate 8s infinite;
+    transform-origin: center;
+  }
+
+  /* Skilled Archer Effect */
+  .bg-archer::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(147, 51, 234, 0.3) 50%,
+      transparent 100%);
+    animation: archerAim 4s infinite linear;
+  }
+
+  /* Dark Anti-hero Effect */
+  .bg-antihero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center,
+      rgba(0, 0, 0, 0.2) 0%,
+      transparent 60%);
+    mix-blend-mode: overlay;
+  }
+
+  /* Charismatic Leader Effect */
+  .bg-leader::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--x, 50%) var(--y, 50%),
+      rgba(234, 179, 8, 0.1) 0%,
+      transparent 70%);
+    filter: blur(16px);
+  }
+
+  /* Noble Knight Effect */
+  .bg-knight::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg,
+      rgba(212, 175, 55, 0.1) 0%,
+      transparent 50%,
+      rgba(212, 175, 55, 0.1) 100%);
+    animation: magicSparkle 6s infinite;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground: 0 0% 94%;
+    --background: 0 0% 10%;
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 94%;
+    --accent: 180 100% 25%;
+    --accent-foreground: 0 0% 94%;
+    --border: 0 0% 25%;
+    --ring: 180 100% 25%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 94%;
+    --sidebar-primary: 180 100% 50%;
+    --sidebar-primary-foreground: 0 0% 94%;
+    --sidebar-accent: 0 0% 20%;
+    --sidebar-accent-foreground: 0 0% 94%;
+    --sidebar-border: 0 0% 25%;
+    --sidebar-ring: 180 100% 25%;
+  }
+}
